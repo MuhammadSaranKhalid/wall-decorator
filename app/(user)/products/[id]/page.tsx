@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 import { useParams } from "next/navigation"
 import { ProductDetail } from "@/components/products/product-detail"
 import { RelatedProducts } from "@/components/products/related-products"
-import { getProductById, getProducts } from "@/lib/firebase"
+// import { getProductById, getProducts } from "@/lib/firebase"
 import type { Product } from "@/types/product"
 import { Loader2 } from "lucide-react"
 
@@ -16,32 +16,32 @@ export default function ProductPage() {
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    const fetchProductData = async () => {
-      try {
-        setLoading(true)
-        const productId = params.id as string
+    // const fetchProductData = async () => {
+    //   try {
+    //     setLoading(true)
+    //     const productId = params.id as string
 
-        // Fetch the main product
-        const productData = await getProductById(productId)
-        if (!productData) {
-          setError("Product not found")
-          return
-        }
-        setProduct(productData)
+    //     // Fetch the main product
+    //     const productData = await getProductById(productId)
+    //     if (!productData) {
+    //       setError("Product not found")
+    //       return
+    //     }
+    //     setProduct(productData)
 
-        // Fetch related products (same material, different products)
-        const allProducts = await getProducts()
-        const related = allProducts.filter((p) => p.id !== productId && p.material === productData.material).slice(0, 4)
-        setRelatedProducts(related)
-      } catch (err) {
-        setError("Failed to load product")
-        console.error(err)
-      } finally {
-        setLoading(false)
-      }
-    }
+    //     // Fetch related products (same material, different products)
+    //     const allProducts = await getProducts()
+    //     const related = allProducts.filter((p) => p.id !== productId && p.material === productData.material).slice(0, 4)
+    //     setRelatedProducts(related)
+    //   } catch (err) {
+    //     setError("Failed to load product")
+    //     console.error(err)
+    //   } finally {
+    //     setLoading(false)
+    //   }
+    // }
 
-    fetchProductData()
+    // fetchProductData()
   }, [params.id])
 
   if (loading) {
