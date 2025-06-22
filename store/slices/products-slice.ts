@@ -1,4 +1,4 @@
-import { collection, getDocs, query, where, orderBy } from "firebase/firestore"
+import { collection, getDocs, query, where, orderBy, doc, getDoc } from "firebase/firestore"
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import type { Product } from "@/types/product"
 import { db } from "@/lib/firebase"
@@ -27,8 +27,8 @@ export const fetchProducts = createAsyncThunk("products/fetchProducts", async ()
         productsRef,
         where("status", "==", "active"),
         where("visibility", "==", "public"),
-        where("isDeleted", "!=", true),
-        orderBy("isDeleted", "asc"),
+        // where("isDeleted", "!=", true),
+        // orderBy("isDeleted", "asc"),
         orderBy("featured", "desc"),
         orderBy("createdAt", "desc"),
       )
@@ -60,6 +60,33 @@ export const fetchProducts = createAsyncThunk("products/fetchProducts", async ()
     return []
   }
 })
+
+export const fetchProductById = createAsyncThunk(
+  "products/fetchProductById",
+  async (id: string) => {
+    try {
+      const productRef = doc(db, "products", id) // Use `doc` instead of `collection` for a single document
+      const docSnapshot = await getDoc(productRef)
+
+      if (docSnapshot.exists()) {
+        const data = docSnapshot.data()
+        const product: Product = {
+          id: docSnapshot.id,
+          ...data,
+          createdAt: data.createdAt?.toDate?.() || data.createdAt,
+          updatedAt: data.updatedAt?.toDate?.() || data.updatedAt,
+        } as Product
+        return product
+      } else {
+        throw new Error("Product not found")
+      }
+    } catch (error) {
+      console.error("Error fetching product by ID:", error)
+      return null
+    }
+  }
+)
+
 
 const productsSlice = createSlice({
   name: "products",
