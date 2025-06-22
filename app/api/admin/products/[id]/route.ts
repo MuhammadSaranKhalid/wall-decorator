@@ -1,6 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server"
-import { ProductService } from "@/lib/firebase-service"
-import { verifyAdminToken } from "@/lib/firebaseAdmin"
+// import { ProductService } from "@/lib/firebase-service"
+// import { verifyAdminToken } from "@/lib/firebaseAdmin"
 
 export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
   try {
@@ -10,15 +10,15 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
     }
 
     const token = authHeader.split(" ")[1]
-    await verifyAdminToken(token)
+    // await verifyAdminToken(token)
 
-    const product = await ProductService.getProductById(params.id)
+    // const product = await ProductService.getProductById(params.id)
 
-    if (!product) {
-      return NextResponse.json({ error: "Product not found" }, { status: 404 })
-    }
+    // if (!product) {
+    //   return NextResponse.json({ error: "Product not found" }, { status: 404 })
+    // }
 
-    return NextResponse.json({ product })
+    return NextResponse.json({ "product": "" })
   } catch (error) {
     console.error("Error fetching product:", error)
     return NextResponse.json({ error: "Failed to fetch product" }, { status: 500 })
@@ -33,10 +33,10 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
     }
 
     const token = authHeader.split(" ")[1]
-    const admin = await verifyAdminToken(token)
+    // const admin = await verifyAdminToken(token)
 
     const updates = await request.json()
-    await ProductService.updateProduct(params.id, updates, admin.uid)
+    // await ProductService.updateProduct(params.id, updates, admin.uid)
 
     return NextResponse.json({
       success: true,
@@ -56,9 +56,9 @@ export async function DELETE(request: NextRequest, { params }: { params: { id: s
     }
 
     const token = authHeader.split(" ")[1]
-    await verifyAdminToken(token)
+    // await verifyAdminToken(token)
 
-    await ProductService.deleteProduct(params.id)
+    // await ProductService.deleteProduct(params.id)
 
     return NextResponse.json({
       success: true,
