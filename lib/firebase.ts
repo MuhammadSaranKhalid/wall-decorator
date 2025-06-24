@@ -13,23 +13,49 @@ const firebaseConfig = {
   measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
 }
 
-// Initialize Firebase client
-let app
-if (!getApps().length) {
-  try {
-    app = initializeApp(firebaseConfig)
-    console.log("Firebase client SDK initialized successfully")
-  } catch (error) {
-    console.error("Failed to initialize Firebase client SDK:", error)
-    throw error
+// Check if we have the required config
+const hasRequiredConfig = firebaseConfig.apiKey && firebaseConfig.projectId
+
+// Initialize Firebase client only if we have the required config
+let app: any = null
+let auth: any = null
+let db: any = null
+let storage: any = null
+
+if (hasRequiredConfig) {
+  if (!getApps().length) {
+    try {
+      app = initializeApp(firebaseConfig)
+      console.log("Firebase client SDK initialized successfully")
+    } catch (error) {
+      console.error("Failed to initialize Firebase client SDK:", error)
+      // Don't throw during build time
+      if (typeof window !== 'undefined') {
+        throw error
+      }
+    }
+  } else {
+    app = getApps()[0]
+  }
+
+  // Only initialize services if app was created successfully
+  if (app) {
+    try {
+      auth = getAuth(app)
+      db = getFirestore(app)
+      storage = getStorage(app)
+    } catch (error) {
+      console.error("Failed to initialize Firebase services:", error)
+      // Don't throw during build time
+      if (typeof window !== 'undefined') {
+        throw error
+      }
+    }
   }
 } else {
-  app = getApps()[0]
+  console.warn("Firebase config is incomplete. Some features may not work.")
 }
 
 // Export Firebase services
-export const auth = getAuth(app)
-export const db = getFirestore(app)
-export const storage = getStorage(app)
-
+export { auth, db, storage }
 export default app

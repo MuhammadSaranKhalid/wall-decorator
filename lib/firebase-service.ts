@@ -1,5 +1,18 @@
-import { db } from "./firebase"
 import { collection, addDoc, getDocs, doc, updateDoc, getDoc, query, orderBy, where } from "firebase/firestore"
+
+// Lazy import Firebase to avoid initialization during build
+let db: any = null
+
+const getFirestore = async () => {
+  if (!db) {
+    const { db: firestore } = await import("./firebase")
+    if (!firestore) {
+      throw new Error("Firebase is not properly configured. Please check your environment variables.")
+    }
+    db = firestore
+  }
+  return db
+}
 
 export interface OrderData {
   id?: string
@@ -34,7 +47,8 @@ export class OrderService {
 
   static async createOrder(orderData: Omit<OrderData, "id">): Promise<string> {
     try {
-      const docRef = await addDoc(collection(db, this.COLLECTION_NAME), {
+      const firestore = await getFirestore()
+      const docRef = await addDoc(collection(firestore, this.COLLECTION_NAME), {
         ...orderData,
         createdAt: new Date(),
       })
@@ -47,7 +61,8 @@ export class OrderService {
 
   static async getAllOrders(): Promise<OrderData[]> {
     try {
-      const q = query(collection(db, this.COLLECTION_NAME), orderBy("createdAt", "desc"))
+      const firestore = await getFirestore()
+      const q = query(collection(firestore, this.COLLECTION_NAME), orderBy("createdAt", "desc"))
       const querySnapshot = await getDocs(q)
       
       return querySnapshot.docs.map(doc => ({
@@ -62,7 +77,8 @@ export class OrderService {
 
   static async getOrderById(orderId: string): Promise<OrderData | null> {
     try {
-      const docRef = doc(db, this.COLLECTION_NAME, orderId)
+      const firestore = await getFirestore()
+      const docRef = doc(firestore, this.COLLECTION_NAME, orderId)
       const docSnap = await getDoc(docRef)
       
       if (docSnap.exists()) {
@@ -81,7 +97,8 @@ export class OrderService {
 
   static async updateOrderStatus(orderId: string, status: OrderData["status"]): Promise<void> {
     try {
-      const docRef = doc(db, this.COLLECTION_NAME, orderId)
+      const firestore = await getFirestore()
+      const docRef = doc(firestore, this.COLLECTION_NAME, orderId)
       await updateDoc(docRef, { status })
     } catch (error) {
       console.error("Error updating order status:", error)
@@ -91,8 +108,9 @@ export class OrderService {
 
   static async getOrdersByEmail(email: string): Promise<OrderData[]> {
     try {
+      const firestore = await getFirestore()
       const q = query(
-        collection(db, this.COLLECTION_NAME),
+        collection(firestore, this.COLLECTION_NAME),
         where("shippingAddress.email", "==", email),
         orderBy("createdAt", "desc")
       )
@@ -114,7 +132,8 @@ export class ProductService {
 
   static async createProduct(productData: any, adminId: string): Promise<string> {
     try {
-      const docRef = await addDoc(collection(db, this.COLLECTION_NAME), {
+      const firestore = await getFirestore()
+      const docRef = await addDoc(collection(firestore, this.COLLECTION_NAME), {
         ...productData,
         createdBy: adminId,
         createdAt: new Date(),
@@ -129,7 +148,8 @@ export class ProductService {
 
   static async getAllProducts(): Promise<any[]> {
     try {
-      const querySnapshot = await getDocs(collection(db, this.COLLECTION_NAME))
+      const firestore = await getFirestore()
+      const querySnapshot = await getDocs(collection(firestore, this.COLLECTION_NAME))
       
       return querySnapshot.docs.map(doc => ({
         id: doc.id,
@@ -143,7 +163,8 @@ export class ProductService {
 
   static async getProductById(productId: string): Promise<any | null> {
     try {
-      const docRef = doc(db, this.COLLECTION_NAME, productId)
+      const firestore = await getFirestore()
+      const docRef = doc(firestore, this.COLLECTION_NAME, productId)
       const docSnap = await getDoc(docRef)
       
       if (docSnap.exists()) {
@@ -162,7 +183,8 @@ export class ProductService {
 
   static async updateProduct(productId: string, productData: any): Promise<void> {
     try {
-      const docRef = doc(db, this.COLLECTION_NAME, productId)
+      const firestore = await getFirestore()
+      const docRef = doc(firestore, this.COLLECTION_NAME, productId)
       await updateDoc(docRef, {
         ...productData,
         updatedAt: new Date(),
