@@ -253,6 +253,10 @@ export async function POST(request: NextRequest) {
     try {
       console.log("Attempting Firebase upload...")
       
+      if (!bucket) {
+        throw new Error("Firebase Storage not configured")
+      }
+      
       // Use Firebase Admin SDK for server-side upload
       const fileRef = bucket.file(fileName)
       
