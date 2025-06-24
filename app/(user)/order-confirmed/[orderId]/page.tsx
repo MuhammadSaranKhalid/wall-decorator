@@ -18,17 +18,29 @@ export default function OrderConfirmedPage() {
       try {
         const orderId = params.orderId as string
 
-        // Get order from localStorage (in a real app, this would be an API call)
-        const orders = JSON.parse(localStorage.getItem("orders") || "[]")
-        const foundOrder = orders.find((o: OrderData) => o.id === orderId)
-
-        if (!foundOrder) {
-          setError("Order not found")
+        // Fetch order from Firebase via API
+        const response = await fetch(`/api/orders/${orderId}`)
+        
+        if (!response.ok) {
+          if (response.status === 404) {
+            setError("Order not found")
+          } else {
+            setError("Failed to load order details")
+          }
           return
         }
 
-        // Convert date string back to Date object
-        foundOrder.createdAt = new Date(foundOrder.createdAt)
+        const data = await response.json()
+        const foundOrder = data.order
+
+        // Convert date string back to Date object if needed
+        if (foundOrder.createdAt && typeof foundOrder.createdAt === 'string') {
+          foundOrder.createdAt = new Date(foundOrder.createdAt)
+        } else if (foundOrder.createdAt?.seconds) {
+          // Handle Firestore timestamp format
+          foundOrder.createdAt = new Date(foundOrder.createdAt.seconds * 1000)
+        }
+
         setOrder(foundOrder)
       } catch (err) {
         setError("Failed to load order details")

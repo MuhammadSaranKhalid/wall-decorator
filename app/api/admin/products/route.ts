@@ -1,5 +1,5 @@
 import { type NextRequest, NextResponse } from "next/server"
-// import { ProductService } from "@/lib/firebase-service"
+import { ProductService } from "@/lib/firebase-service"
 // import { verifyAdminToken } from "@/lib/firebaseAdmin"
 
 export async function GET(request: NextRequest) {
@@ -12,8 +12,8 @@ export async function GET(request: NextRequest) {
     const token = authHeader.split(" ")[1]
     // await verifyAdminToken(token)
 
-    // const products = await ProductService.getAllProducts()
-    return NextResponse.json({"product": "product"})
+    const products = await ProductService.getAllProducts()
+    return NextResponse.json({ products })
   } catch (error) {
     console.error("Error fetching products:", error)
     return NextResponse.json({ error: "Failed to fetch products" }, { status: 500 })
@@ -31,11 +31,11 @@ export async function POST(request: NextRequest) {
     // const admin = await verifyAdminToken(token)
 
     const productData = await request.json()
-    // const productId = await ProductService.createProduct(productData, admin.uid)
+    const productId = await ProductService.createProduct(productData, "admin-user")
 
     return NextResponse.json({
       success: true,
-      // productId,
+      productId,
       message: "Product created successfully",
     })
   } catch (error) {
