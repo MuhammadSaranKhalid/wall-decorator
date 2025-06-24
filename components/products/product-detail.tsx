@@ -664,13 +664,26 @@ export function ProductDetail({ product }: ProductDetailProps) {
               onTouchEnd={onTouchEnd}
               tabIndex={0}
             >
-              <Image
+              {/* <Image
                 src={productImages[selectedImage] || "/placeholder.svg"}
                 alt={product.images[selectedImage]?.alt || product.name}
-                fill
-                className="object-cover"
+                // fill
+                // className="object-cover"
+                              layout="responsive" 
+                                width={500} // You can adjust the width based on your desired size
+                  height={500} // Adjust the height accordingly
                 priority
-              />
+              /> */}
+              <div className="relative w-full h-full flex items-center justify-center">
+                <Image
+                  src={productImages[selectedImage] || "/placeholder.svg"}
+                  alt={product.images[selectedImage]?.alt || product.name}
+                  layout="responsive" // keeps the image's natural aspect ratio
+                  width={500} // You can adjust the width based on your desired size
+                  height={500} // Adjust the height accordingly
+                  priority
+                />
+              </div>
 
               {/* Navigation Arrows - Hidden on mobile, visible on desktop */}
               {productImages.length > 1 && (
@@ -711,6 +724,7 @@ export function ProductDetail({ product }: ProductDetailProps) {
                   </Badge>
                 </div>
               )}
+
               {product.pricing.isOnSale && (
                 <Badge className="absolute top-3 sm:top-4 left-3 sm:left-4 bg-red-500 hover:bg-red-500 text-xs sm:text-sm">
                   Sale
