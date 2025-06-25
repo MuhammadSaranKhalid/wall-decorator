@@ -261,7 +261,7 @@ export function AdminDashboard() {
                     </div>
                     <div className="flex-1">
                       <p className="font-medium text-sm">{product.name}</p>
-                      <p className="text-sm text-gray-600">${product.price}</p>
+                      {/* <p className="text-sm text-gray-600">${product?.price}</p> */}
                     </div>
                     <div className="text-right">
                       <Badge variant="destructive">Low Stock</Badge>
