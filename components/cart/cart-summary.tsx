@@ -11,9 +11,11 @@ export function CartSummary() {
   const { items, total } = useSelector((state: RootState) => state.cart)
 
   const subtotal = total
-  const shipping = subtotal > 100 ? 0 : 15
-  const tax = subtotal * 0.08
-  const finalTotal = subtotal + shipping + tax
+  // const shipping = subtotal > 100 ? 0 : 15
+  const shipping = 250
+  // const tax = subtotal * 0.08
+  // const finalTotal = subtotal + shipping + tax
+  const finalTotal = subtotal + shipping
 
   return (
     <div className="sticky top-4">
@@ -24,29 +26,29 @@ export function CartSummary() {
         <CardContent className="space-y-4">
           <div className="flex justify-between text-sm">
             <span className="text-gray-600">Subtotal ({items.length} items)</span>
-            <span className="font-medium">${subtotal.toFixed(2)}</span>
+            <span className="font-medium">Rs{subtotal.toFixed(2)}</span>
           </div>
 
           <div className="flex justify-between text-sm">
             <span className="text-gray-600">Shipping</span>
-            <span className="font-medium">{shipping === 0 ? "Free" : `$${shipping.toFixed(2)}`}</span>
+            <span className="font-medium">{shipping === 0 ? "Free" : `Rs${shipping.toFixed(2)}`}</span>
           </div>
 
-          <div className="flex justify-between text-sm">
+          {/* <div className="flex justify-between text-sm">
             <span className="text-gray-600">Tax</span>
             <span className="font-medium">${tax.toFixed(2)}</span>
-          </div>
+          </div> */}
 
           <div className="border-t pt-4">
             <div className="flex justify-between font-semibold text-md">
               <span>Total</span>
-              <span>${finalTotal.toFixed(2)}</span>
+              <span>Rs{finalTotal.toFixed(2)}</span>
             </div>
           </div>
 
           {subtotal < 100 && (
             <p className="text-xs text-green-600">
-              You are ${(100 - subtotal).toFixed(2)} away from <span className="font-semibold">FREE Shipping!</span>
+              You are Rs{(100 - subtotal).toFixed(2)} away from <span className="font-semibold">FREE Shipping!</span>
             </p>
           )}
 

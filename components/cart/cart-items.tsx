@@ -24,6 +24,11 @@ export function CartItems() {
     dispatch(removeFromCart(id))
   }
 
+  const formatPrice = (price: number, currency: string) => {
+    const symbol = currency === "USD" ? "$" : currency === "PKR" ? "₨" : "";
+    return `${symbol}${price.toFixed(2)}`;
+  };
+
   return (
     <div className="space-y-6">
       {items.map((item) => (
@@ -44,7 +49,7 @@ export function CartItems() {
               {/* Details */}
               <div className="md:col-span-3">
                 <h3 className="font-semibold text-lg text-[#2E2C2A]">{item.name}</h3>
-                <p className="text-[#777]">${item.price}</p>
+                <p className="text-[#777]">Rs{item.price}</p>
               </div>
 
               {/* Quantity Controls */}

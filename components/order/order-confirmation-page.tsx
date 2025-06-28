@@ -67,7 +67,7 @@ Order Date: ${order.createdAt.toLocaleDateString()}
 Status: ${order.status}
 
 ITEMS ORDERED:
-${order.items.map((item) => `- ${item.name} (Qty: ${item.quantity}) - $${(item.price * item.quantity).toFixed(2)}`).join("\n")}
+${order.items.map((item) => `- ${item.name} (Qty: ${item.quantity}) - Rs${(item.price * item.quantity).toFixed(2)}`).join("\n")}
 
 DELIVERY ADDRESS:
 ${order.shippingAddress.firstName} ${order.shippingAddress.lastName}
@@ -277,10 +277,10 @@ Thank you for shopping with ArtisanWall!
                   <div className="flex-1">
                     <h4 className="font-medium text-[#2E2C2A]">{item.name}</h4>
                     <p className="text-sm text-gray-600">Quantity: {item.quantity}</p>
-                    <p className="text-sm text-gray-600">${item.price.toFixed(2)} each</p>
+                    <p className="text-sm text-gray-600">Rs{item.price.toFixed(2)} each</p>
                   </div>
                   <div className="text-right">
-                    <p className="font-medium">${(item.price * item.quantity).toFixed(2)}</p>
+                    <p className="font-medium">Rs{(item.price * item.quantity).toFixed(2)}</p>
                   </div>
                 </div>
               ))}
@@ -295,22 +295,22 @@ Thank you for shopping with ArtisanWall!
                 </div>
                 <div className="flex justify-between text-sm">
                   <span>Shipping:</span>
-                  <span>{order.shipping === 0 ? "Free" : `$${order.shipping.toFixed(2)}`}</span>
+                  <span>{order.shipping === 0 ? "Free" : `Rs${order.shipping.toFixed(2)}`}</span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span>Tax:</span>
-                  <span>${order.tax.toFixed(2)}</span>
+                  <span>Rs{order.tax.toFixed(2)}</span>
                 </div>
                 {codCharges > 0 && (
                   <div className="flex justify-between text-sm text-amber-600">
                     <span>COD Charges:</span>
-                    <span>${codCharges.toFixed(2)}</span>
+                    <span>Rs{codCharges.toFixed(2)}</span>
                   </div>
                 )}
                 <Separator />
                 <div className="flex justify-between font-semibold text-lg">
                   <span>Total (Cash on Delivery):</span>
-                  <span>${finalTotal.toFixed(2)}</span>
+                  <span>Rs{finalTotal.toFixed(2)}</span>
                 </div>
               </div>
             </div>
@@ -334,7 +334,7 @@ Thank you for shopping with ArtisanWall!
                 <div>
                   <p className="font-medium">Keep Cash Ready</p>
                   <p className="text-sm">
-                    Please keep exactly <strong>${finalTotal.toFixed(2)}</strong> in cash ready for the delivery person.
+                    Please keep exactly <strong>Rs{finalTotal.toFixed(2)}</strong> in cash ready for the delivery person.
                   </p>
                 </div>
               </div>

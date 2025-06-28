@@ -40,7 +40,7 @@ export function OrderSummary({ items, subtotal, shipping, tax, codFee, total }: 
                   <Badge variant="outline" className="text-xs">
                     Qty: {item.quantity}
                   </Badge>
-                  <p className="font-semibold text-sm sm:text-base">${(item.price * item.quantity).toFixed(2)}</p>
+                  <p className="font-semibold text-sm sm:text-base">Rs{(item.price * item.quantity).toFixed(2)}</p>
                 </div>
               </div>
             </div>
@@ -56,7 +56,7 @@ export function OrderSummary({ items, subtotal, shipping, tax, codFee, total }: 
               <Calculator className="h-4 w-4 text-gray-500" />
               Subtotal ({items.length} items)
             </span>
-            <span className="font-medium">${subtotal.toFixed(2)}</span>
+            <span className="font-medium">Rs{subtotal.toFixed(2)}</span>
           </div>
 
           <div className="flex justify-between text-sm">
@@ -64,15 +64,15 @@ export function OrderSummary({ items, subtotal, shipping, tax, codFee, total }: 
               <Truck className="h-4 w-4 text-gray-500" />
               Shipping
             </span>
-            <span className={`font-medium ${shipping === 0 ? "text-green-600" : ""}`}>
-              {shipping === 0 ? "Free" : `$${shipping.toFixed(2)}`}
+            <span className={`font-medium Rs{shipping === 0 ? "text-green-600" : ""}`}>
+              {shipping === 0 ? "Free" : `Rs${shipping.toFixed(2)}`}
             </span>
           </div>
 
-          <div className="flex justify-between text-sm">
+          {/* <div className="flex justify-between text-sm">
             <span>Tax (8%)</span>
             <span className="font-medium">${tax.toFixed(2)}</span>
-          </div>
+          </div> */}
 
           {codFee > 0 && (
             <div className="flex justify-between text-sm">
@@ -80,13 +80,13 @@ export function OrderSummary({ items, subtotal, shipping, tax, codFee, total }: 
                 <Banknote className="h-4 w-4 text-amber-600" />
                 COD Fee
               </span>
-              <span className="font-medium text-amber-600">${codFee.toFixed(2)}</span>
+              <span className="font-medium text-amber-600">Rs{codFee.toFixed(2)}</span>
             </div>
           )}
 
           {subtotal >= 100 && (
             <div className="bg-green-50 border border-green-200 rounded-lg p-3">
-              <p className="text-sm text-green-800 font-medium">🎉 Free shipping on orders over $100!</p>
+              <p className="text-sm text-green-800 font-medium">🎉 Free shipping on orders over Rs100!</p>
             </div>
           )}
         </div>
@@ -97,9 +97,9 @@ export function OrderSummary({ items, subtotal, shipping, tax, codFee, total }: 
         <div className="bg-[#4A3F35] text-white rounded-lg p-4">
           <div className="flex justify-between items-center">
             <span className="text-lg font-semibold">Total (COD)</span>
-            <span className="text-2xl font-bold">${total.toFixed(2)}</span>
+            <span className="text-2xl font-bold">Rs{total.toFixed(2)}</span>
           </div>
-          <p className="text-sm opacity-90 mt-1">Pay ${total.toFixed(2)} in cash upon delivery</p>
+          <p className="text-sm opacity-90 mt-1">Pay Rs{total.toFixed(2)} in cash upon delivery</p>
         </div>
 
         {/* Security Notice */}
