@@ -9,7 +9,7 @@ const hasStorageBucket = process.env.FIREBASE_STORAGE_BUCKET;
 let app: any = null;
 let bucket: any = null;
 
-if (hasServiceAccount && hasStorageBucket) {
+if (hasServiceAccount) {
   try {
     const serviceAccount: ServiceAccount = JSON.parse(
       process.env.FIREBASE_SERVICE_ACCOUNT_KEY as string
@@ -18,7 +18,7 @@ if (hasServiceAccount && hasStorageBucket) {
     app = getApps().length === 0
       ? initializeApp({
           credential: cert(serviceAccount),
-          storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
+          storageBucket: "walldecorator-b4f3d.firebasestorage.app",
         })
       : getApps()[0];
 
