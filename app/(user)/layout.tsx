@@ -5,6 +5,7 @@ import { Providers } from "@/components/providers";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { BottomNavigation } from "@/components/layout/bottom-navigation";
+import { FloatingWhatsApp } from "@/components/whatsapp";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -30,6 +31,7 @@ export default function RootLayout({
             <main className="flex-1">{children}</main>
             <Footer />
             <BottomNavigation />
+            <FloatingWhatsApp />
           </div>
         </Providers>
       </body>
