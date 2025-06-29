@@ -1,27 +1,36 @@
-"use client"
+"use client";
 
-import { useSelector } from "react-redux"
-import { Button } from "@/components/ui/button"
-import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet"
-import { Separator } from "@/components/ui/separator"
-import { ScrollArea } from "@/components/ui/scroll-area"
-import { CartItems } from "@/components/cart/cart-items"
-import { ShoppingBag, ArrowRight } from "lucide-react"
-import Link from "next/link"
-import type { RootState } from "@/store/store"
+import { useSelector } from "react-redux";
+import { Button } from "@/components/ui/button";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+} from "@/components/ui/sheet";
+import { Separator } from "@/components/ui/separator";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { CartItems } from "@/components/cart/cart-items";
+import { ShoppingBag, ArrowRight } from "lucide-react";
+import Link from "next/link";
+import type { RootState } from "@/store/store";
 
 interface CartSheetProps {
-  open: boolean
-  onOpenChange: (open: boolean) => void
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
 }
 
 export function CartSheet({ open, onOpenChange }: CartSheetProps) {
-  const { items, total } = useSelector((state: RootState) => state.cart)
-  const itemCount = items.reduce((sum, item) => sum + item.quantity, 0)
+  const { items, total } = useSelector((state: RootState) => state.cart);
+  const itemCount = items.reduce((sum, item) => sum + item.quantity, 0);
+  const subtotal = total;
+  const shipping = 250;
+  const finalTotal = subtotal + shipping;
 
   const formatPrice = (price: number) => {
-    return `Rs${price.toFixed(2)}`
-  }
+    return `Rs${price.toFixed(2)}`;
+  };
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
@@ -30,7 +39,11 @@ export function CartSheet({ open, onOpenChange }: CartSheetProps) {
           <SheetTitle className="flex items-center gap-2">
             <ShoppingBag className="h-5 w-5" />
             Shopping Cart
-            {itemCount > 0 && <span className="text-sm text-muted-foreground">({itemCount} items)</span>}
+            {itemCount > 0 && (
+              <span className="text-sm text-muted-foreground">
+                ({itemCount} items)
+              </span>
+            )}
           </SheetTitle>
           <SheetDescription>
             {itemCount === 0
@@ -48,7 +61,9 @@ export function CartSheet({ open, onOpenChange }: CartSheetProps) {
             </div>
             <div className="space-y-2">
               <h3 className="font-medium text-gray-900">Your cart is empty</h3>
-              <p className="text-sm text-gray-500">Discover our amazing products and add them to your cart.</p>
+              <p className="text-sm text-gray-500">
+                Discover our amazing products and add them to your cart.
+              </p>
             </div>
             <Button asChild className="bg-[#2E2C2A] hover:bg-[#3E3C3A]">
               <Link href="/products" onClick={() => onOpenChange(false)}>
@@ -66,7 +81,7 @@ export function CartSheet({ open, onOpenChange }: CartSheetProps) {
               <Separator />
 
               {/* Cart Summary */}
-              <div className="space-y-2">
+              {/* <div className="space-y-2">
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">Subtotal ({itemCount} items)</span>
                   <span>{formatPrice(total)}</span>
@@ -80,17 +95,40 @@ export function CartSheet({ open, onOpenChange }: CartSheetProps) {
                   <span>Total</span>
                   <span className="text-lg">{formatPrice(total)}</span>
                 </div>
+              </div> */}
+
+              <div className="space-y-2">
+                <div className="flex justify-between text-sm">
+                  <span>Subtotal</span>
+                  <span>Rs{subtotal.toFixed(2)}</span>
+                </div>
+                <div className="flex justify-between text-sm">
+                  <span>Shipping</span>
+                  <span>Rs{shipping.toFixed(2)}</span>
+                </div>
+                <Separator />
+                <div className="flex justify-between font-semibold">
+                  <span>Total</span>
+                  <span>Rs{finalTotal.toFixed(2)}</span>
+                </div>
               </div>
 
               {/* Action Buttons */}
               <div className="space-y-2">
-                <Button asChild className="w-full bg-[#9A7B4F] hover:bg-[#8A6B3F] text-white">
+                <Button
+                  asChild
+                  className="w-full bg-[#9A7B4F] hover:bg-[#8A6B3F] text-white"
+                >
                   <Link href="/checkout" onClick={() => onOpenChange(false)}>
                     Proceed to Checkout
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Link>
                 </Button>
-                <Button asChild variant="outline" className="w-full bg-transparent">
+                <Button
+                  asChild
+                  variant="outline"
+                  className="w-full bg-transparent"
+                >
                   <Link href="/cart" onClick={() => onOpenChange(false)}>
                     View Full Cart
                   </Link>
@@ -101,5 +139,5 @@ export function CartSheet({ open, onOpenChange }: CartSheetProps) {
         )}
       </SheetContent>
     </Sheet>
-  )
+  );
 }

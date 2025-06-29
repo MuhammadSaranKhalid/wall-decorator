@@ -8,7 +8,7 @@ import { Newsletter } from "@/components/home/newsletter"
 
 export default function HomePage() {
   return (
-    <main className="min-h-screen">
+    <main className="min-h-screen overflow-x-hidden">
       <Hero />
       <AboutSection />
       <FeaturedCollections />

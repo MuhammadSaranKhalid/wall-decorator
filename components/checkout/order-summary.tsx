@@ -84,11 +84,11 @@ export function OrderSummary({ items, subtotal, shipping, tax, codFee, total }: 
             </div>
           )}
 
-          {subtotal >= 100 && (
+          {/* {subtotal >= 100 && (
             <div className="bg-green-50 border border-green-200 rounded-lg p-3">
               <p className="text-sm text-green-800 font-medium">🎉 Free shipping on orders over Rs100!</p>
             </div>
-          )}
+          )} */}
         </div>
 
         <Separator />
