@@ -65,7 +65,7 @@
     "recharts": "2.15.0",
     "redux": "latest",
     "redux-persist": "^6.0.0",
-    "sharp": "latest",
+    "sharp": "^0.34.2",
     "sonner": "^1.7.1",
     "tailwind-merge": "^2.5.5",
     "tailwindcss-animate": "^1.0.7",
