@@ -31,7 +31,7 @@ export function CartSummary() {
 
           <div className="flex justify-between text-sm">
             <span className="text-gray-600">Shipping</span>
-            <span className="font-medium">{shipping === 0 ? "Free" : `Rs${shipping.toFixed(2)}`}</span>
+            <span className="font-medium">{`Rs${shipping.toFixed(2)}`}</span>
           </div>
 
           {/* <div className="flex justify-between text-sm">

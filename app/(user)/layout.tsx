@@ -1,24 +1,25 @@
-import type React from "react"
-import { Inter, Playfair_Display } from "next/font/google"
-import "../globals.css"
-import { Providers } from "@/components/providers"
-import { Header } from "@/components/layout/header"
-import { Footer } from "@/components/layout/footer"
+import type React from "react";
+import { Inter, Playfair_Display } from "next/font/google";
+import "../globals.css";
+import { Providers } from "@/components/providers";
+import { Header } from "@/components/layout/header";
+import { Footer } from "@/components/layout/footer";
+import { BottomNavigation } from "@/components/layout/bottom-navigation";
 
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
-})
+});
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
   variable: "--font-playfair",
-})
+});
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
     <html lang="en" className={`${inter.variable} ${playfair.variable}`}>
@@ -28,13 +29,14 @@ export default function RootLayout({
             <Header />
             <main className="flex-1">{children}</main>
             <Footer />
+            <BottomNavigation />
           </div>
         </Providers>
       </body>
     </html>
-  )
+  );
 }
 
 export const metadata = {
   generator: "v0.dev",
-}
+};
