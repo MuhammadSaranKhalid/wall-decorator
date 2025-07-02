@@ -6,6 +6,7 @@ import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { BottomNavigation } from "@/components/layout/bottom-navigation";
 import { FloatingWhatsApp } from "@/components/whatsapp";
+import { MetaPixel } from "@/components/meta-pixel";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -25,6 +26,8 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} ${playfair.variable}`}>
       <body className="bg-[#F8F6F3] text-[#2E2C2A] font-sans">
+        <MetaPixel />
+
         <Providers>
           <div className="min-h-screen flex flex-col">
             <Header />
