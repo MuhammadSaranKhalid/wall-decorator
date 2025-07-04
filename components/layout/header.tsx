@@ -190,7 +190,7 @@ export function Header() {
 
             {/* User menu + cart */}
             <div className="flex items-center space-x-4">
-              <DropdownMenu>
+              {/* <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" size="icon">
                     <User className="h-5 w-5" />
@@ -211,7 +211,7 @@ export function Header() {
                     </Link>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
-              </DropdownMenu>
+              </DropdownMenu> */}
 
               <Button variant="ghost" size="icon" asChild className="relative">
                 <Link href="/cart">
