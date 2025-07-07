@@ -67,13 +67,24 @@ console.log("ORDERS")
               const q = query(ordersRef, orderBy("createdAt", "desc"));
               const querySnapshot = await getDocs(q);
       
-              querySnapshot.forEach((doc) => {
-                loadedOrders.push({
-                  id: doc.id,
-                  ...doc.data(),
-                } as OrderData);
-              });
-
+              // querySnapshot.forEach((doc) => {
+              //   loadedOrders.push({
+              //     id: doc.id,
+              //     ...doc.data(),
+              //   } as OrderData);
+              // });
+    querySnapshot.forEach((doc) => {
+      const data = doc.data();
+      
+      // Convert Firestore Timestamp to JavaScript Date
+      const orderData = {
+        id: doc.id,
+        ...data,
+        createdAt: data.createdAt?.toDate() || new Date(), // Convert Timestamp to Date
+      } as OrderData;
+      
+      loadedOrders.push(orderData);
+    });
       
 
       setOrders(loadedOrders)
