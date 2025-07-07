@@ -26,6 +26,8 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Separator } from "@/components/ui/separator"
 import Image from "next/image"
 import type { OrderData } from "@/components/checkout/checkout-flow"
+import { collection, getDocs, orderBy, query } from "firebase/firestore"
+import { db } from "@/lib/firebase"
 
 export function AdminOrdersPage() {
   const [orders, setOrders] = useState<OrderData[]>([])
@@ -45,15 +47,36 @@ export function AdminOrdersPage() {
 
   const loadOrders = async () => {
     try {
-      const storedOrders = JSON.parse(localStorage.getItem("orders") || "[]")
-      const ordersWithDates = storedOrders
-        .map((order: any) => ({
-          ...order,
-          createdAt: new Date(order.createdAt),
-        }))
-        .sort((a: OrderData, b: OrderData) => b.createdAt.getTime() - a.createdAt.getTime())
+            let loadedOrders: OrderData[] = [];
+          // Debug: Check if db is properly initialized
+    console.log("Database instance:", db);
+    
+    if (!db) {
+      throw new Error("Database not initialized");
+    }
+    
+      // const storedOrders = JSON.parse(localStorage.getItem("orders") || "[]")
+      // const ordersWithDates = storedOrders
+      //   .map((order: any) => ({
+      //     ...order,
+      //     createdAt: new Date(order.createdAt),
+      //   }))
+      //   .sort((a: OrderData, b: OrderData) => b.createdAt.getTime() - a.createdAt.getTime())
+console.log("ORDERS")
+              const ordersRef = collection(db, "orders");
+              const q = query(ordersRef, orderBy("createdAt", "desc"));
+              const querySnapshot = await getDocs(q);
+      
+              querySnapshot.forEach((doc) => {
+                loadedOrders.push({
+                  id: doc.id,
+                  ...doc.data(),
+                } as OrderData);
+              });
 
-      setOrders(ordersWithDates)
+      
+
+      setOrders(loadedOrders)
     } catch (error) {
       console.error("Error loading orders:", error)
     } finally {
